@@ -409,6 +409,7 @@ _**Throughput SLI**_:
 These user actions are nothing more than web requests so we have latency and availability SLI for them.
 
 *Problem*: Variance in request rates can cause a SLI to get “lost” in the noise.
+
 *Solution*: Assigning a weight to each component SLI based on traffic/importance reduces risk.
 
 
