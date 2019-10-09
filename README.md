@@ -14,13 +14,17 @@ This is an ongoing list of notes on SRE. I pay carefully attention to metrics an
 
 
 <h3>SLOs</h3>
+
 **SLO (Service Level Objective)** - A quantitative measurement of time or quantity of actions that must take place to enter SLA (repercussions). Internal thresholds set to alert the SLA violation. Quantitatively stronger than SLA. Services can have multiple SLO’s.
+
 
 *Example*: HTTP (SLO) 200ms. If a request takes longer than 200ms you will enter SLA (usually financial repercussions). An SRE engineer needs to be able to anticipate (ideally) or remedy (more common) a failed SLO.
 
 
 <h3>SLAs</h3>
+
 **SLA (Service Level Agreement)** - Essentially the consequences of a failed SLO. Usually comes in the form of direct or indirect monetary compensation.
+
 
 *Example*: GCP breaks their HTTP SLO. GCP reimburses the company with $100 in cloud credits.
 
@@ -34,6 +38,7 @@ This is an ongoing list of notes on SRE. I pay carefully attention to metrics an
 **SLI (Service Level Indicators)** - The metrics you define to quantitatively measure your system performance.
 
 *Example*: `Error Rate (Network Health) - (success / total requests) * 100`
+
 *Example*: `Error Rate (Network Health) - (success / throughput) * 100`
 
 **Measuring Reliability (Edge Case)** - Not every organization and/or system is linear. There are cases when you will need exponentially better service to a customer versus your standard service you normally offer.
@@ -61,9 +66,11 @@ Value to customers in this case could be thought of the probability that new cus
 <h3>How To Determine Reliability</h3>
 
 1. Measure your SLO achieved and be above the target.
+
 	❓: What do the users need and how does the system currently perform?
 
 2. Measure how SLI is performing against the target.
+
 	❓: Will increasing the service availability result in positive externalities or negative externalities to the business function?
 
 *Note*: If you make your service more reliable than an individuals ISP, your customer is going to blame the ISP, not you.
@@ -89,7 +96,7 @@ Value to customers in this case could be thought of the probability that new cus
 
 *Example*: To improve reliability of a new feature incorporated into a system you could find that it will cost 10x the previous amount to ensure that the new system is reliable.
 
-**Advanced Topics**:
+**Advanced Error Budget Topics**:
 
 *“Dynamic release cadence”* 
 - Throttle back the grip on disallowing features to be released due to an error budget that was overly frugal.
@@ -103,7 +110,7 @@ Value to customers in this case could be thought of the probability that new cus
 *“Silver Bullets”* 
 - Error budget is already out. SRE doesn’t want to support the new feature. SWE says new feature is vital to company and has N-silver bullets. The SWE would have to have seniority and use one of their silver bullets in this case. DO NOT ROLLOVER.
 
-**_Silver Bullets are treated as a failure and would require a post-mordem._**
+⚠️ ️️️Silver Bullets are treated as a failure and would require a post-mordem. ⚠️
 
 
 <h3>Trade-Off Theory</h3>
@@ -115,7 +122,9 @@ Value to customers in this case could be thought of the probability that new cus
  - Route traffic to a small percentage of users with a new image and study how the system responds to the changes. This is also a great way to discover and eliminate SPOF (single point of failure).
 
 *TTD* - Time to detect an issue in a system.
+
 *TTR* - Time to resolve the issue in the system.
+
 *TTF* - Time elapsed between failures.
 
 `Error Impact (TBF) = (TTD + TTR) * impact (%) / TTF`
@@ -127,7 +136,10 @@ Value to customers in this case could be thought of the probability that new cus
 - Implement systems to get alerts to the right person faster (reduce detection time).
 
 **How to improve TTR?** 
-- Implement systems to fix outages faster. Examples: develop a playbook, increased data parsing and log analysis. Take a failed zone offline and redirect traffic to an available zone while the affected zone is getting repaired.
+- Implement systems to fix outages faster. 
+
+
+*Examples*: develop a playbook, increased data parsing and log analysis. Take a failed zone offline and redirect traffic to an available zone while the affected zone is getting repaired.
 
 **How to improve impact % ?** 
 - Implement system to roll out new features to a very small set of users (note: Find users that fall within *DAU* and are not your “core” user base. Find users that you “can afford to lose” and test it on them.) Give changes time to bake.
@@ -174,13 +186,11 @@ Value to customers in this case could be thought of the probability that new cus
 
 `CPU bound = slow service = unhappy user`
 
+`SLI = good events / valid events`
+
 SLI is a measurement of user experience (quantitative)
 
 *Services internal state metrics*: thread pull fullness, request queue length, request queue outages
-
-^ No linear relationship!
-
-`SLI = good events / valid events`
 
 *SLI Range*: 0%-100%
 
@@ -239,22 +249,27 @@ SLI aggregated over a long time period is needed to make a decision on the valid
 
 *HTTP(S)*: Parameters include host name, requested path to set the scope to a set of tasks or response handlers.
 
-*Problem with HTTP Status Code(s)*: You could have a 2xx status code (success) and the request body could be null. This would fail for the user. Error visibility in the JSON body only you would have to do parsing to ensure that it was successful.
+*Problem with HTTP Status Code(s)*: 
+- You could have a 2xx status code (success) and the request body could be null. This would fail for the user. 
+- Error visibility in the JSON body only you would have to do parsing to ensure that it was successful.
 
 *Data Processing*: Selection of inputs to set the scope to some data subset.
 
 *Request/Response SLIs*: the ratio of successful requests received.
+
+*Request/Response Latency*: % of requests that are served faster than some threshold.
 
 **Which of the requests that are served are valid for the SLI?**
 
 **How can you tell if the request was served with degrading quality?**
 - The mechanism that the system uses to degrade quality should mark responses as such.
 
+
 *Example*: Availability of a VM - proportion of minutes that it was booted and availably via SSH. 
 
-*Note*: Could also ping the IP. Also, write logic as code and export a boolean value to the SLO monitoring system. Also, could have an integer SLI value to represent the number of minutes it was available. 
-
-*Request/Response Latency*: % of requests that are served faster than some threshold. 
+*Note*:
+- Could also ping the IP. Also, write logic as code and export a boolean value to the SLO monitoring system. 
+- Also, could have an integer SLI value to represent the number of minutes it was available.
 
 **How accurate is the correlation between latency and user experience?**
 
@@ -264,13 +279,17 @@ Probably pretty high. A system can be optimized for this if we find a great coor
 
 - When you have a cache in front of the service -> bimodal distribution of response latencies (double peak with one local maximum and a global maximum).
 
-*Latency* - the proportion of work-queue tasks that are faster than threshold X. Users care about the time it takes to complete tasks. SREs care about the latency of the asynchronous queue ACK.
+*Latency* 
+- The proportion of work-queue tasks that are faster than threshold X. 
+- Users care about the time it takes to complete tasks. 
+- SREs care about the latency of the asynchronous queue ACK.
 
 *Latency Reporting* - only report long running applications on their their success/failure.
 
 *Example*:
 
 `Threshold (T) = 30 minutes`
+
 `Reported (R) = 120 minutes`
 
 ⚠️ 90 minutes of “unknown” failing. You can only make decisions off of data that you measure! ⚠️
@@ -289,11 +308,11 @@ Probably pretty high. A system can be optimized for this if we find a great coor
 
 - Users expect that those outputs are up to date and are not aware of the degradation over time. Data pipelines have to be constantly rebuilt and checked to ensure they meet the freshness threshold.
 
-_**Freshness SLI**_: Ratio of valid data updated frequency beyond threshold X.
+**Freshness SLI**: Ratio of valid data updated frequency beyond threshold X.
 
 - Time is measured as the duration between data input to batch process (t=0) and then process outputs to some other mechanism `(t=N)`. Freshness the time since this completion.
 
-*Streaming (continuous processing)*: 
+**Streaming (continuous processing)**: 
 - Watermarked timestamp that tells the freshness as a function of time. (Time Series Data)
 
 *Example*: 1/5 streaming shards slow (latency is not within threshold) therefore 20% of data is stale.
@@ -312,8 +331,10 @@ _**Freshness SLI**_: Ratio of valid data updated frequency beyond threshold X.
 *Coverage SLI*: The ratio of valid data that has been successfully processed.
 
 *Example*: 
-`Input records = 2,147,483,647` 
+`Input records = 2,147,483,647`
+
 `Records that thrower status symbol “OK” = 2,147,452,310`
+
 `Coverage = IR/OK = 99.9985%`
 
 _**Throughput SLI**_:
@@ -406,4 +427,4 @@ Solution: Do nothing for now and just work on gathering data.
 
 *Achievable Targets*:
 - Achievable based on past performance.
-- SLOs are dynamic in nature
+- SLOs are dynamic in nature.
