@@ -13,12 +13,16 @@ This is an ongoing list of notes on SRE. I pay carefully attention to metrics an
 **[The 'S' Curve (Math)](https://en.wikipedia.org/wiki/Sigmoid_function)**
 
 
+
+
 <h3>SLOs</h3>
 
 **SLO (Service Level Objective)** - A quantitative measurement of time or quantity of actions that must take place to enter SLA (repercussions). Internal thresholds set to alert the SLA violation. Quantitatively stronger than SLA. Services can have multiple SLO’s.
 
 
 *Example*: HTTP (SLO) 200ms. If a request takes longer than 200ms you will enter SLA (usually financial repercussions). An SRE engineer needs to be able to anticipate (ideally) or remedy (more common) a failed SLO.
+
+
 
 
 <h3>SLAs</h3>
@@ -29,6 +33,8 @@ This is an ongoing list of notes on SRE. I pay carefully attention to metrics an
 *Example*: GCP breaks their HTTP SLO. GCP reimburses the company with $100 in cloud credits.
 
 **The Happiness Test** - The minimum threshold to ensure that customers are happy.
+
+
 
 
 <h3>Measuring Reliability</h3>
@@ -44,6 +50,8 @@ This is an ongoing list of notes on SRE. I pay carefully attention to metrics an
 **Measuring Reliability (Edge Case)** - Not every organization and/or system is linear. There are cases when you will need exponentially better service to a customer versus your standard service you normally offer.
 
 *Example*: Black Friday - It is expected that Company Y will have an N% increase in their website (read: client) and thus will require X% increase in the “triangle of success”.
+
+
 
 
 <h3>Triangle of Success - R.A.S.</h3>
@@ -63,6 +71,8 @@ Marginal cost in this case is how much it would cost (engineer time, compute cos
 Value to customers in this case could be thought of the probability that new customers use the service due to proposed change and/or the probability of risk that you will lose a customer.
 
 
+
+
 <h3>How To Determine Reliability</h3>
 
 1. Measure your SLO achieved and be above the target.
@@ -76,9 +86,13 @@ Value to customers in this case could be thought of the probability that new cus
 *Note*: If you make your service more reliable than an individuals ISP, your customer is going to blame the ISP, not you.
 
 
+
+
 <h3>Iteration Process</h3>
 
 - Review a new SLO after 3 months. Follow up review after 6-12 months.
+
+
 
 
 <h3>Error Budgets</h3>
@@ -111,6 +125,8 @@ Value to customers in this case could be thought of the probability that new cus
 - Error budget is already out. SRE doesn’t want to support the new feature. SWE says new feature is vital to company and has N-silver bullets. The SWE would have to have seniority and use one of their silver bullets in this case. DO NOT ROLLOVER.
 
 ⚠️ ️️️Silver Bullets are treated as a failure and would require a post-mordem. ⚠️
+
+
 
 
 <h3>Trade-Off Theory</h3>
@@ -150,6 +166,8 @@ Value to customers in this case could be thought of the probability that new cus
 *Example*: re-routing traffic from a failed region over to a region that is healthy.
 
 
+
+
 <h3>Reliability Operations Best Practices</h3>
 
 - Periodically report the worst customers, worst region, uneven error budget distribution. Focus extra hard on those regions.
@@ -161,6 +179,8 @@ Value to customers in this case could be thought of the probability that new cus
 - Rollback speed.
 
 - Phased rollouts.
+
+
 
 
 <h3>Quantifying User Satisfaction</h3>
@@ -180,6 +200,8 @@ Value to customers in this case could be thought of the probability that new cus
 *Example*: Website is slow to load or respond to other embedded features. User leaves site. Count up the speed and the quantity of users that left the site in this window of time as a ratio of users that didn’t. You will have a quantified metric of how unhappy the event made users.
 
 
+
+
 <h3>Properties of SLI</h3>
 
 **Standard (computer) operational metrics**: Load average, CPU util, memory usage, bandwidth.
@@ -197,6 +219,8 @@ SLI is a measurement of user experience (quantitative)
 *Benefits*: Consistent format
 
 SLI aggregated over a long time period is needed to make a decision on the validity of the metric. Want high signal, low noise.
+
+
 
 
 <h3>Measuring SLIs (Order of User Proximity HI->LOW)</h3>
@@ -235,6 +259,8 @@ SLI aggregated over a long time period is needed to make a decision on the valid
     3. Would force you to have to drop your SLO.
 
 
+
+
 <h3>Quantified User Journey</h3>
 
 *SLI*: Request/response will tell us availability, latency, and quality of service.
@@ -243,6 +269,8 @@ SLI aggregated over a long time period is needed to make a decision on the valid
 
 *Storage*: Measure the durability of the storage layer.
 - Not a great metric since most data will not be lost unless there is a complete catastrophe
+
+
 
 
 <h3>Measuring Different Types of Validity</h3>
@@ -299,6 +327,8 @@ Probably pretty high. A system can be optimized for this if we find a great coor
 - 99% of surface area (responses) cannot have a missing backend response.  99.9% must be served with <= 1 missing.
 
 
+
+
 <h3>Data Processing SLIs</h3>
 
 **Main topics**: Freshness, correctness, coverage, and throughput.
@@ -350,6 +380,8 @@ _**Throughput SLI**_:
 ⚠️ Huge drops in throughput are almost guaranteed to cause angry customers. ⚠️
 
 
+
+
 <h3>SLI Recommendations (Google’s Rec)</h3>
 
 ⚠️ Only need 1-3 SLIs for each part of the user journey. ⚠️
@@ -362,6 +394,8 @@ _**Throughput SLI**_:
 *Example*:
 - *SLI*: Something broke.
 - *Metrics*: **This** broke.
+
+
 
 
 <h3>Aggregating SLIs</h3>
@@ -377,7 +411,17 @@ These user actions are nothing more than web requests so we have latency and ava
 *Problem*: Variance in request rates can cause a SLI to get “lost” in the noise.
 *Solution*: Assigning a weight to each component SLI based on traffic/importance reduces risk.
 
-<insert data table>
+
+| Journey   | Good  | Fast  | Threshold |
+|-----------|-------|-------|-----------|
+| home      | 9994  | 9866  | 10000     |
+| search    | 9989  | 9729  | 10000     |
+| category  | 9997  | 9913  | 10000     |
+| open page | 10000 | 9849  | 10000     |
+| sum (ms)  | 39980 | 39356 | 40000     |
+| browse    | 99.95 | 98.39 |           |
+
+
 
 
 <h3>Bucketing</h3>
@@ -407,6 +451,8 @@ These user actions are nothing more than web requests so we have latency and ava
 *Third-party*: Users are generally understanding that third party (payment processor, identify auth) services will be slower. Ok to set reasonable thresholds.
 
 
+
+
 <h3>Creating Realistic SLO Targets</h3>
 
 *Google’s SLI Philosophy*: 
@@ -418,6 +464,8 @@ Solution: Do nothing for now and just work on gathering data.
 
 *Notes*:
 - Never assume users are OK with status quo. Use data to drive decision making.
+
+
 
 
 <h3>Continuous Improvement</h3>
