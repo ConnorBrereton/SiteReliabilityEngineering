@@ -5,6 +5,7 @@ This is an ongoing list of notes on SRE. I pay carefully attention to metrics an
 <h1>Site Reliability Engineering - Google Style</h1>
 
 <h3>Links to Mathematical Deep Dives</h4>
+
 **[Reliability Mathematics](https://www.reliabilityeducation.com/reliabilityeducation/ReliabilityPredictionBasics.pdf)**
 
 **[The 'S' Curve (Preface)](https://www.insanegrowth.com/podcast-google-s-curve-theory/)**
@@ -12,13 +13,13 @@ This is an ongoing list of notes on SRE. I pay carefully attention to metrics an
 **[The 'S' Curve (Math)](https://en.wikipedia.org/wiki/Sigmoid_function)**
 
 
-<h5>SLOs</h5>
+<h3>SLOs</h3>
 **SLO (Service Level Objective)** - A quantitative measurement of time or quantity of actions that must take place to enter SLA (repercussions). Internal thresholds set to alert the SLA violation. Quantitatively stronger than SLA. Services can have multiple SLO’s.
 
 *Example*: HTTP (SLO) 200ms. If a request takes longer than 200ms you will enter SLA (usually financial repercussions). An SRE engineer needs to be able to anticipate (ideally) or remedy (more common) a failed SLO.
 
 
-<h5>SLAs</h5>
+<h3>SLAs</h3>
 **SLA (Service Level Agreement)** - Essentially the consequences of a failed SLO. Usually comes in the form of direct or indirect monetary compensation.
 
 *Example*: GCP breaks their HTTP SLO. GCP reimburses the company with $100 in cloud credits.
@@ -26,21 +27,21 @@ This is an ongoing list of notes on SRE. I pay carefully attention to metrics an
 **The Happiness Test** - The minimum threshold to ensure that customers are happy.
 
 
-<h5>Measuring Reliability</h5>
+<h3>Measuring Reliability</h3>
 
 *Example*: Netflix - Playback latency (HTTP). Packet loss in the middle of a video.
 
 **SLI (Service Level Indicators)** - The metrics you define to quantitatively measure your system performance.
 
-*Example*: Error Rate (Network Health) - (success / total requests) * 100
-*Example*: Error Rate (Network Health) - (success / throughput) * 100
+*Example*: `Error Rate (Network Health) - (success / total requests) * 100`
+*Example*: `Error Rate (Network Health) - (success / throughput) * 100`
 
 **Measuring Reliability (Edge Case)** - Not every organization and/or system is linear. There are cases when you will need exponentially better service to a customer versus your standard service you normally offer.
 
 *Example*: Black Friday - It is expected that Company Y will have an N% increase in their website (read: client) and thus will require X% increase in the “triangle of success”.
 
 
-<h5>Triangle of Success - R.A.S.</h5>
+<h3>Triangle of Success - R.A.S.</h3>
 
 **Reliability** - % of time that the system functions properly for the user.
 **Availability** - % of time that the system is up and running.
@@ -57,7 +58,7 @@ Marginal cost in this case is how much it would cost (engineer time, compute cos
 Value to customers in this case could be thought of the probability that new customers use the service due to proposed change and/or the probability of risk that you will lose a customer.
 
 
-<h5>How To Determine Reliability</h5>
+<h3>How To Determine Reliability</h3>
 
 1. Measure your SLO achieved and be above the target.
 	❓: What do the users need and how does the system currently perform?
@@ -68,12 +69,12 @@ Value to customers in this case could be thought of the probability that new cus
 *Note*: If you make your service more reliable than an individuals ISP, your customer is going to blame the ISP, not you.
 
 
-<h5>Iteration Process</h5>
+<h3>Iteration Process</h3>
 
 - Review a new SLO after 3 months. Follow up review after 6-12 months.
 
 
-<h5>Error Budgets</h5>
+<h3>Error Budgets</h3>
 
 - Requires executive buy-in.
 - Balance reliability with feature velocity.
@@ -105,7 +106,7 @@ Value to customers in this case could be thought of the probability that new cus
 **_Silver Bullets are treated as a failure and would require a post-mordem._**
 
 
-<h5>Trade-Off Theory</h5>
+<h3>Trade-Off Theory</h3>
 
 **How to make devs happy?** 
 - Integration testing, automated canary analysis (ACA), rollback.
@@ -137,7 +138,7 @@ Value to customers in this case could be thought of the probability that new cus
 *Example*: re-routing traffic from a failed region over to a region that is healthy.
 
 
-<h5>Reliability Operations Best Practices</h5>
+<h3>Reliability Operations Best Practices</h3>
 
 - Periodically report the worst customers, worst region, uneven error budget distribution. Focus extra hard on those regions.
 
@@ -150,7 +151,7 @@ Value to customers in this case could be thought of the probability that new cus
 - Phased rollouts.
 
 
-<h5>Quantifying User Satisfaction</h5>
+<h3>Quantifying User Satisfaction</h3>
 
 - Think about the reliablility from the *users* point of view.
 
@@ -167,7 +168,7 @@ Value to customers in this case could be thought of the probability that new cus
 *Example*: Website is slow to load or respond to other embedded features. User leaves site. Count up the speed and the quantity of users that left the site in this window of time as a ratio of users that didn’t. You will have a quantified metric of how unhappy the event made users.
 
 
-<h5>Properties of SLI</h5>
+<h3>Properties of SLI</h3>
 
 **Standard (computer) operational metrics**: Load average, CPU util, memory usage, bandwidth.
 
@@ -188,7 +189,7 @@ SLI is a measurement of user experience (quantitative)
 SLI aggregated over a long time period is needed to make a decision on the validity of the metric. Want high signal, low noise.
 
 
-<h5>Measuring SLIs (Order of User Proximity HI->LOW)</h5>
+<h3>Measuring SLIs (Order of User Proximity HI->LOW)</h3>
 
 1. **Processing server side request logs**
     1. Request backfill SLI logs. Get retroactive data to build a model prior to conception.
@@ -224,7 +225,7 @@ SLI aggregated over a long time period is needed to make a decision on the valid
     3. Would force you to have to drop your SLO.
 
 
-<h5>Quantified User Journey</h5>
+<h3>Quantified User Journey</h3>
 
 *SLI*: Request/response will tell us availability, latency, and quality of service.
 
@@ -234,7 +235,7 @@ SLI aggregated over a long time period is needed to make a decision on the valid
 - Not a great metric since most data will not be lost unless there is a complete catastrophe
 
 
-<h5>Measuring Different Types of Validity</h5>
+<h3>Measuring Different Types of Validity</h3>
 
 *HTTP(S)*: Parameters include host name, requested path to set the scope to a set of tasks or response handlers.
 
@@ -279,7 +280,7 @@ Probably pretty high. A system can be optimized for this if we find a great coor
 - 99% of surface area (responses) cannot have a missing backend response.  99.9% must be served with <= 1 missing.
 
 
-<h5>Data Processing SLIs</h5>
+<h3>Data Processing SLIs</h3>
 
 **Main topics**: Freshness, correctness, coverage, and throughput.
 
@@ -328,7 +329,7 @@ _**Throughput SLI**_:
 ⚠️ Huge drops in throughput are almost guaranteed to cause angry customers. ⚠️
 
 
-<h5>SLI Recommendations (Google’s Rec)</h5>
+<h3>SLI Recommendations (Google’s Rec)</h3>
 
 ⚠️ Only need 1-3 SLIs for each part of the user journey. ⚠️
 
@@ -342,7 +343,7 @@ _**Throughput SLI**_:
 - *Metrics*: **This** broke.
 
 
-<h5>Aggregating SLIs</h5>
+<h3>Aggregating SLIs</h3>
 
 *Example*: App Store. You have 4 main user “journeys”.
 1. Visiting the homepage.
@@ -358,7 +359,7 @@ These user actions are nothing more than web requests so we have latency and ava
 <insert data table>
 
 
-<h5>Bucketing</h5>
+<h3>Bucketing</h3>
 
 *Problem*:
 - Varying thresholds for relevant SLOs (latency, freshness, throughput) increases complexity significantly.
@@ -385,7 +386,7 @@ These user actions are nothing more than web requests so we have latency and ava
 *Third-party*: Users are generally understanding that third party (payment processor, identify auth) services will be slower. Ok to set reasonable thresholds.
 
 
-<h5>Creating Realistic SLO Targets</h5>
+<h3>Creating Realistic SLO Targets</h3>
 
 *Google’s SLI Philosophy*: 
 - User expectations are strongly tied to past performance. If a service was 10/10 last quarter and this quarter it is 7/10 the user will really experience that service as something like a 5-6/10.
@@ -398,7 +399,7 @@ Solution: Do nothing for now and just work on gathering data.
 - Never assume users are OK with status quo. Use data to drive decision making.
 
 
-<h5>Continuous Improvement</h5>
+<h3>Continuous Improvement</h3>
 
 *Aspirational Targets*:
 - These are what the business needs.
