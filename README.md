@@ -1,7 +1,6 @@
 # SiteReliabilityEngineering
 I read the entire 'Site Reliability Engineering - Google' book so you didn't have to 🦸‍♂️
 
-<<<<<<< HEAD
 This is an ongoing list of notes on SRE. I pay carefully attention to metrics and the math behind them 👨‍🔬
 
 
@@ -234,9 +233,3 @@ Example: Threshold (T) = 30 minutes, Reported (R) = 120 minutes => 90 minutes of
 
 Example: Service that fans-out incoming requests to 10 different backends (each backend has 99.99% avail target).
 99% of surface area (responses) cannot have a missing backend response.  99.9% must be served with <= 1 missing.
-
-
-
-=======
-This is an ongoing list of notes on SRE. I pay carefully attention to metrics and the math behind them  👨🏼‍🏫 
->>>>>>> 41fd6a8dcd8ddc72a4d12f1d6f34305a022ed716
