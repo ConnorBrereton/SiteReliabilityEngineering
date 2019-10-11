@@ -477,3 +477,223 @@ Solution: Do nothing for now and just work on gathering data.
 *Achievable Targets*:
 - Achievable based on past performance.
 - SLOs are dynamic in nature.
+
+
+
+<h3>Developing SLOs and SLIs</h3>
+
+1. Figure out SLI types & architect high level spec.
+
+2. Describe in great detail the events being measured. Where/How the SLI will be measured?
+
+3. Walk through user journey (trace through architecture) and identify coverage gaps. Document points of failure extensively. High risk failure points indicate a re-work needed.
+
+4. Set SLO targets. Set measurement windows to gather performance data.
+
+
+
+<h5>Example (Video Game System)</h5>
+
+- You have a video game that has 50MM 30-day-trial *DAU* playing.
+
+- Average 1-10MM users online at any give time.
+
+- 1 new world each month added that causes traffic and revenue spikes.
+
+- Largest revenue stream = real world ($$) -> game currency ($)
+
+- 2nd largest revenue stream = PvP battles, mini-games, resource production.
+
+- Largest player expense = settlement upgrades, defensive weapons for battles, setting up recruitment for other players to join them, etc.
+
+- Mobile client & web UI applications.
+
+**Mobile Client**
+
+- *HTTP Requests*: JSON-RPC messages over REST HTTP.
+
+- *Socket*: Open web-socket to receive game updates.
+
+**Web**
+
+- Browser talks to **web-server** over HTTPS
+
+**Other**
+
+- Leader boards are updated every 5 minutes.
+
+
+
+<h3>Example (Profile Page)</h3>
+
+- Use a sequence diagram to plan out the client <-> server interactions done by the infrastructure.
+
+- *Client*: Requests the profile URL over HTTPS.
+
+
+- *Web Server*:
+    - Send HTML in response. 
+    
+    - Service the user's profile data from the user profile data store.
+
+    - Render the leaderboard for the players location using latitude/longitude data.
+
+    - Build the HTML response for player and send back to client.
+
+- *CDN*: Content delivery network will automatically serve the CSS/JavaScript via HTML response.
+
+- *Load Balancer*: Accepts the incoming request and forwards it to a pool of web servers.
+
+
+
+<h3>Refining SLI Spec.</h3>
+
+*Steps*:
+
+- How do you want to measure the performance of the service against users expectations.
+
+- The user interaction is a request-response interaction so we want to **measure availability**.
+
+- **Measuring Availability**:
+
+    - Proportion of status codes 2xx / total status codes.
+
+- **Filtering**:
+
+    - If we want profile page requests from HTTP we want to scrape the following: `/profile/user/*`
+
+    - **Further Refining**:
+
+        - Find the proportion HTTP `GET` requests for `/profile/user/*` that have a `Response Code` of `200` or `300` or `400`.
+
+    - **Final SLI Location / Metric**:
+
+        - The proportion of HTTP `GET` requests for `/profile/user` or `/profile/user/avatar` that have `200`, `300` or `400` response codes measured at the `load balancer`.
+
+    - **Latency SLI**:
+
+        - Look for **entire responses** sent in < X-ms (milliseconds) at the load balancer.
+
+
+
+<h3>Observability Gaps</h3>
+
+**Issues**:
+
+- Measuring at the front end (for revenue purposes) only gives you protocol metadata. This only gives you partial visibility into your overall infra.
+
+**Reflection Questions**:
+
+- Do the SLIs capture the entire user journey and failures?
+
+- What are the edge cases and exceptions?
+
+- Do the SLIs capture all journey permutations?
+
+
+<h4>Observability Issue w/ Previous Example</h4>
+
+**Resolution**:
+
+- Create a *probe* that:
+    1. Inspects the *HTTP* response body.
+
+    2. Validates load balancer routes.
+
+    3. Tests CDN serving data.
+
+
+
+<h3>Back-End Infrastructure Failure</h3>
+
+**System Analysis**:
+
+    - Ignore the front end SLIs since we know these have visibility issues.
+
+    - Ignore the client side (CDN) since it's only used for ads and analytics.
+
+    - Focus on the core backend infrastructure.
+
+*Focus*:
+
+    - Focus on the load in the load balancer and server pools.
+
+Identify elevated latency and `500` errors.
+
+*Focus*:
+
+    - Focus on "bad code" being push into production.
+
+This bad code would have to get past **(i)** the `OK` response header and **(ii)** the prober checking the `response body`.
+
+*Focus*:
+
+    - Focus on a middle ground solution. You don't have to send them a failure code if you can't get the leaderboard to send.
+
+    - You can serve the user a partial response in the event of a failure to lookup.
+
+*Focus*:
+
+    - The prober (sitting at the front end) won't catch the case where the wrong user profile is served.
+
+    - This is a huge issue and you'd want to measure this.
+
+
+
+<h3>Setting Achieveable SLO Targets</h3>
+
+*Focus*:
+
+    - Find all possible risks.
+
+    - Estimate their cost to the error budget.
+
+    - If total cost > error budget (SLO targets) need to follow Pareto Principle and solve the most vital ones first.
+
+
+
+<h3>Documenting the SLO</h3>
+
+Everyone in your organization working on the *service*, *product managers*, *developers*, *SREs* and *executives* needs to know the following:
+
+    - Where the line is (SLO/SLI)
+
+    - What happens if it's crossed (SLA)
+
+    - Exceptions to standard measuring procedures.
+
+    - Set owners for each SLO.
+
+There should be historical data on previous SLOs and documentation to show why each SLO was changed.
+
+*Example*: Don't count `503` as errors because load balancer handles them.
+
+The status (development, staging, paging) of the SLO should always be tracked.
+
+Capture all of your metadata in one place in the version controlled *configuration file* to have a "single source of truth".
+
+
+
+<h3>SRE Service Dashboard</h3>
+
+**[Example Google Dashboard](https://imgur.com/a/Uqhlpd6)**
+
+*Important Metadata Features*:
+
+    - Measurement Window: Defines the time period of each data "chunk measured" before restart.
+
+    - Graph Duration: The time period that a SRE would see on their dashboard GUI.
+
+    - Target: The availability target that your want to maintain.
+
+    - Owner: The person that owns the product or service. (Product Manager for example)
+
+    - Contacts: Top down contacts on the product/service. (Tech Lead -> SRE)
+
+    - Status: The status of the service.
+
+    - Rationale: What results from the SLI being triggered. (The negative externalities)
+
+    - References: Links to any relevant internal notes around this service.
+
+    - Changelog: A record of any changes made to the service's SLI/SLO.
