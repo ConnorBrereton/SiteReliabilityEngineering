@@ -1,6 +1,8 @@
 # SiteReliabilityEngineering
 
-This is an ongoing list of notes on SRE. I pay carefully attention to metrics and the math behind them 👨‍🔬
+This is an ongoing list of notes on SRE I've learned over the past couple of years.
+
+I pay careful attention to metrics and the math behind them 👨‍🔬
 
 <h1>Site Reliability Engineering - Google Style</h1>
 
