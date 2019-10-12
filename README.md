@@ -699,3 +699,77 @@ Capture all of your metadata in one place in the version controlled *configurati
     - References: Links to any relevant internal notes around this service.
 
     - Changelog: A record of any changes made to the service's SLI/SLO.
+
+
+
+<h3>Characteristics of an Error Budget Policy</h3>
+
+*7 Characteristics*:
+
+    - Result in engineering efforts to improve reliability if error budget is spent.
+
+    - Quantitatively describe WHEN the error budget will kick in.
+
+    - Quantitatively describe HOW the error budget will kick in. Specifically how the Dev/SRE teams will respond.
+
+    - Set in place consequences if the SLO consistently fails over a long time horizon.
+
+    Example: devs that sacrifice reliability for features should be let go.
+
+    - Policy is a consistently applied set of rules.
+
+    - Document who disagreements get escalated to.
+
+    - Policy should be agreed upon and signed off by all parties.
+
+
+
+<h3>How to Create an Error Budget Policy</h3>
+
+*Steps*:
+
+    - Increase consequences w.r.t. increased levels of error budget burn.
+
+    - Developers and SREs must work together to push out new features to the user while mainting the reliability. This is impossible to do all the time so it's a constant balance.
+
+    - SREs want to help the SWEs develop more features safely. Want to have alligened incentives. This is the only way that SRE will work in an organization.
+
+    - Examples consequence: Pulling back the reins on feature releases. This will be a consequence to the devs for breaking the codebase which annoyed the users.
+
+
+
+<h3>Example Error Budget Policy</h3>
+
+*Threshold 1*:
+
+    - Automated alerts are setup to notify the SRE of an SLO that is at risk.
+
+*Threshold 2*:
+
+    - SREs decide they need collaborative efforts to defend the SLO. Devs will come in to assist.
+
+*Threshold 3*:
+
+    - 30-day error budget has been spent without a root cause figured out. All feature releases will be blocked as a consequence and dev will need to interlock with SRE to fix the issue.
+
+    - The changes are bundled up into a weekly hotfix patch.
+
+    - DO NOT cut a new release from the devlopment branch.
+
+*Threshold 4*:
+
+    - 90-day error budget has been spent without a root cause figured out. SRE will escalate to executive leadership to get more engineering time dedicated to this issue at hand.
+
+
+
+<h3>Example Policy Scenario</h3>
+
+*Scenario*:
+
+    - Availability SLO: 99.9% over past 30 days.
+
+    - Bug causes 99.85% availability (0.15% of the time serves errors)
+
+*Resolution*:
+
+    - See visual example **[here](https://imgur.com/a/QWzdLxz)**
