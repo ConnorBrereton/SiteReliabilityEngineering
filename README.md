@@ -6,7 +6,7 @@ I pay careful attention to metrics and the math behind them 👨‍🔬
 
 <h1>Site Reliability Engineering - Google Style</h1>
 
-<h3>Links to Mathematical Deep Dives</h4>
+<h3>Helpful Links</h4>
 
 **[Reliability Mathematics](https://www.reliabilityeducation.com/reliabilityeducation/ReliabilityPredictionBasics.pdf)**
 
@@ -14,7 +14,13 @@ I pay careful attention to metrics and the math behind them 👨‍🔬
 
 **[The 'S' Curve (Math)](https://en.wikipedia.org/wiki/Sigmoid_function)**
 
+**[How Complex Systems Fail (Chicago)](http://web.mit.edu/2.75/resources/random/How%20Complex%20Systems%20Fail.pdf)**
 
+**[Google SRE Coding Questions](https://careercup.com/page?pid=google-interview-questions&job=site-reliability-engineer-interview-questions)**
+
+**[Path to SRE (manager)](https://danrl.com/blog/2019/path-to-srm/)**
+
+**[MIT 6.033 Systems Engineering](http://web.mit.edu/6.033/www/)**
 
 
 <h3>SLOs</h3>
