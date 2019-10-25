@@ -22,6 +22,8 @@ I pay careful attention to metrics and the math behind them 👨‍🔬
 
 **[MIT 6.033 Systems Engineering](http://web.mit.edu/6.033/www/)**
 
+**[Linux Command(s) (First-Principles)](http://sysadvent.blogspot.com/2010/12/day-15-down-ls-rabbit-hole.html)**
+
 
 <h3>SLOs</h3>
 
