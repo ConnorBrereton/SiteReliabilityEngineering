@@ -24,6 +24,7 @@ I pay careful attention to metrics and the math behind them 👨‍🔬
 
 **[Linux Command(s) (First-Principles)](http://sysadvent.blogspot.com/2010/12/day-15-down-ls-rabbit-hole.html)**
 
+**[Short Topics on SysAdmin (Interview Prep)](https://www.usenix.org/short-topics)**
 
 <h3>SLOs</h3>
 
