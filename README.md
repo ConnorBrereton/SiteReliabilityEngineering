@@ -28,6 +28,8 @@ I pay careful attention to metrics and the math behind them 👨‍🔬
 
 **[IIT Madras - Systems Engineering Course](https://nptel.ac.in/courses/106/106/106106144/)**
 
+**[Steps to Analyze a System](http://www.brendangregg.com/methodology.html)**
+
 <h3>SLOs</h3>
 
 **SLO (Service Level Objective)** - A quantitative measurement of time or quantity of actions that must take place to enter SLA (repercussions). Internal thresholds set to alert the SLA violation. Quantitatively stronger than SLA. Services can have multiple SLO’s.
