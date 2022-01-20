@@ -30,6 +30,8 @@ I pay careful attention to metrics and the math behind them 👨‍🔬
 
 **[Steps to Analyze a System](http://www.brendangregg.com/methodology.html)**
 
+**[Squadcast's blog on SRE best practices](https://www.squadcast.com/categories/sre)**
+
 <h3>SLOs</h3>
 
 **SLO (Service Level Objective)** - A quantitative measurement of time or quantity of actions that must take place to enter SLA (repercussions). Internal thresholds set to alert the SLA violation. Quantitatively stronger than SLA. Services can have multiple SLO’s.
