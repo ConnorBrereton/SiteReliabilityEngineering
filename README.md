@@ -8,13 +8,13 @@ I pay careful attention to metrics and the math behind them 👨‍🔬
 
 <h3>Helpful Links</h4>
 
-**[Reliability Mathematics](https://www.reliabilityeducation.com/reliabilityeducation/ReliabilityPredictionBasics.pdf)**
+**[Reliability Mathematics](http://www.reliabilityeducation.com/ReliabilityPredictionBasics.pdf)**
 
 **[The 'S' Curve (Preface)](https://www.insanegrowth.com/podcast-google-s-curve-theory/)**
 
 **[The 'S' Curve (Math)](https://en.wikipedia.org/wiki/Sigmoid_function)**
 
-**[How Complex Systems Fail (Chicago)](http://web.mit.edu/2.75/resources/random/How%20Complex%20Systems%20Fail.pdf)**
+**[How Complex Systems Fail (Chicago)](https://github.com/dmvaldman/library/blob/master/essays/Cook%20-%20How%20Complex%20Systems%20Fail.pdf)**
 
 **[Google SRE Coding Questions](https://careercup.com/page?pid=google-interview-questions&job=site-reliability-engineer-interview-questions)**
 
